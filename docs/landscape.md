@@ -2,7 +2,7 @@
 
 调研日期：2026-10-08 · 为本项目选型与设计服务
 
-**有相近产品，而且已有很接近的 Cloudflare 开源实现。** 最接近现成阅读方案的是 Inoreader；最接近部署架构的是 Briefings。建议保留 Cloudflare 项目方向，同时把现成工具作为对照，集中验证按人物追踪、跨节目访谈识别和经营证据留存能否减少人工整理。
+**有相近产品，而且“按人物追踪 AI 一手内容”已有开源实践。** 本轮比较六个网站与六个 GitHub 项目：最接近人物追踪思路的是 Follow Builders，最接近现成阅读方案的是 Inoreader，最接近 Cloudflare 部署架构的是 Briefings。建议保留 Cloudflare 项目方向，同时用现成工具作对照，验证自选经营者名单、跨节目访谈识别和经营证据留存能否减少人工整理。
 
 本次核查官方功能文档、公开页面、GitHub README/许可证和部分源码。未注册付费产品、运行第三方项目或测试真实名单。下文的功能是文档或源码所示能力；准确率、覆盖率和维护成本仍需实测。“本次没有确认”不等于产品一定没有此功能。
 
@@ -31,15 +31,20 @@
 
 | 项目 | 已查看的能力与运行依赖 | 复用决定 |
 | --- | --- | --- |
+| [Follow Builders](https://github.com/zarazhangrui/follow-builders) | 按人物整理 X、播客和博客；集中更新 feed，由 agent 生成中英日报/周报 | 最接近人物优先的选源思路；README 标 MIT，本轮未见独立 LICENSE，复制代码前确认完整许可；当前只借鉴选源与语言配置 |
 | [Briefings](https://github.com/hirefrank/briefings) | RSS 日摘要/周报；Workers + Hono + D1/R2，另用 KV 和四条 Queues | 最接近技术参考；[MIT](https://github.com/hirefrank/briefings/blob/main/LICENSE)，择取小模块，不整库 fork |
 | [AI News Brief](https://github.com/frankzch/ai-news-brief) | 多源采集、YouTube 字幕、中英摘要与两层去重；Python + PostgreSQL/pgvector + 浏览器 | [MIT](https://github.com/frankzch/ai-news-brief/blob/main/LICENSE)，学习处理分层；不移植整套运行环境或热度阈值 |
 | [TrendRadar](https://github.com/sansan0/TrendRadar) | 热榜/RSS、关键词分组、AI 分析、日报 HTML；Python/Docker | [GPL-3.0](https://github.com/sansan0/TrendRadar/blob/master/LICENSE)；本轮只借鉴增量展示与筛选体验，不复制代码 |
 | [news-summary](https://github.com/guo-yichen/news-summary) | RSS + Supadata YouTube 字幕 + 部分预建播客 feed，中文日报到 Notion/邮件；Python + GitHub Actions | 调研时未找到明确许可证，代码不纳入复用；参考定时采集顺序，不能视作任意播客转写方案 |
 | [ai-podcast-ripper](https://github.com/mbjornson/ai-podcast-ripper) | RSS 拉新集、转写、长稿分块、重试；macOS + Python + FFmpeg + 本地模型服务 | 调研时未找到明确许可证，代码不纳入复用；本机依赖与托管目标不同 |
 
+**Follow Builders 让自建理由更需要具体。** [README](https://github.com/zarazhangrui/follow-builders/blob/main/README.md)描述了集中维护的 AI 研究者、创始人、产品经理和工程师名单，以及 26 个 X 账号、6 个播客、2 个博客；feed 每日更新，可生成英文、中文或双语简报。[客户端准备脚本](https://github.com/zarazhangrui/follow-builders/blob/main/scripts/prepare-digest.js#L29)指向项目维护的三个 feed。其“不需要内容 API key”不等于 agent 推理与整个流程免费。本轮只查看文件和 feed 结构，没有运行它或验证日更质量。
+
+它适合借鉴人物优先和集中来源配置，但默认名单由项目维护，与用户自主维护经营者名单不同；AI 从业身份也不能代替商业成果证据。它是 news-summary 的预建播客 feed 来源，这说明下游所谓播客支持可能依赖一个有限目录。首版不直接导入其人物名单，也不新增这一公共 feed 依赖；未来评估时需单独验证覆盖和上游更新状态。
+
 **Briefings 最有借鉴价值，也最需要检查处理边界。** 本轮读取了 [提交 3f023e3](https://github.com/hirefrank/briefings/commit/3f023e3a33dbf276c46a49fef764bbc37dbfa3cd) 的源码：其 [feed 提取](https://github.com/hirefrank/briefings/blob/3f023e3a33dbf276c46a49fef764bbc37dbfa3cd/src/services/feed/feed-service.ts#L401)清洗 RSS 内已有正文；[摘要路径](https://github.com/hirefrank/briefings/blob/3f023e3a33dbf276c46a49fef764bbc37dbfa3cd/src/services/summarization/summarization-service.ts#L60)限制每批十篇，[结构化 prompt](https://github.com/hirefrank/briefings/blob/3f023e3a33dbf276c46a49fef764bbc37dbfa3cd/src/services/summarization/summarization-service.ts#L769)将每篇截到约 2,000 字符。它适合参考部署与来源状态，不适合直接承担完整长访谈的证据抽取。README 的防幻觉表述属于项目声明，本轮未验证效果。
 
-**成熟度不能从 README 长度或星数推出。** GitHub API 核查时五个项目均未归档；最后 push 分别为 Briefings 2026-02-02、AI News Brief 2026-09-19、TrendRadar 2026-09-13、news-summary 2026-10-08、ai-podcast-ripper 2026-09-28。这些日期只说明仓库活动，不能证明生产可靠。后续选定复用模块时，固定 commit、核对许可证、针对真实来源运行测试，并保留归属说明。
+**成熟度不能从 README 长度或星数推出。** GitHub API 核查时六个项目均未归档；最后 push 分别为 Follow Builders 2026-10-08、Briefings 2026-02-02、AI News Brief 2026-09-19、TrendRadar 2026-09-13、news-summary 2026-10-08、ai-podcast-ripper 2026-09-28。这些日期只说明仓库活动，不能证明生产可靠。后续选定复用模块时，固定 commit、核对许可证、针对真实来源运行测试，并保留归属说明。
 
 news-summary 和 ai-podcast-ripper 的许可证接口当时返回 404，结合根目录和 README 检查后仍未确认授权：[前者仓库 API](https://api.github.com/repos/guo-yichen/news-summary) · [后者仓库 API](https://api.github.com/repos/mbjornson/ai-podcast-ripper)。这两者作为设计参考，不当作已获许可的代码库。本轮没有引入任何第三方源码或依赖。
 
@@ -47,6 +52,10 @@ news-summary 和 ai-podcast-ripper 的许可证接口当时返回 404，结合�
 
 “生成中文摘要”“按收入字段组织信息”都可能通过现成产品的自定义 prompt 完成。自建理由必须更具体：同一个人出现在不同节目时能否正确关联；数字与出处是否长期一致；采集缺失能否清楚看见；每天是否减少查找、核对和修正的时间。
 
-建议开发前用同一组 20 条真实样本，对照 Inoreader 与本项目的目标卡片。记录需要手工触发的步骤、遗漏、错误归因和每日整理时间。现成工具满足需求时，向产品负责人呈现轻量配置替代；仍以其确认的 Cloudflare 方向为当前执行范围。该对照不自动替用户改变托管要求。
+建议第一阶段先做限时两小时的 Inoreader 配置初筛，只判断可行性。质量比较等双方均有实际输出后进行：同一组冻结的 20 条真实样本、相同 URL 与摘要要求、相同人工输入，补充及修正时间单列。不能拿人工精修的理想卡片与工具原始输出对比；账号、额度或时间不足记未测，不记失败。
+
+发现测试另用相同人物、别名、节目来源和固定时间窗，隐藏事先保存的访谈核对集，报告“已知核对集命中率”，不推断全网覆盖。七天试运行再记录每天整理时间。现成工具满足需求时，向产品负责人呈现轻量配置替代；当前 Cloudflare 约束不自动改变。
 
 借鉴成熟工具的固定分类、来源入口、按需转写和失败提示。第一版暂缓知识图谱、聊天、思维导图、全文搜索、全网播客索引和实时推送，让每项新增功能都能对应一次真实阅读决策。
+
+两轮修改已落实到 v0.3：第一轮收窄差异主张并补来源能力；第二轮修正样本分母、公平对照、完整度的可观察边界和预算排队。真实名单上的覆盖、摘要准确性、供应商完整度信号、维护时间和账单仍未实测，文档评审不能代替这些验证。
