@@ -7,6 +7,7 @@
 - [产品需求与手机页面](docs/prd.md)：先看这个，确认第一版解决的问题。
 - [实施计划与评审项](docs/plan.md)：开发顺序、交付标准与成本预算。
 - [前后端技术设计](docs/rfc.md)：Cloudflare 架构、数据模型、采集和部署。
+- [同类网站与 GitHub 项目调研](docs/landscape.md) · [两轮交叉评审](docs/review_iterations.md)
 - [验证计划](docs/test.md) · [工作记录](docs/working.md)
 - [名单填写示例](config/people.example.yaml)
 
