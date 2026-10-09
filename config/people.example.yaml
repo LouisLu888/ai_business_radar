@@ -1,0 +1,18 @@
+# 虚构示例；复制为 people.local.yaml 后填写，真实文件不提交。
+# 不需要先填全，人物姓名 + 一个已知链接即可开始人工确认来源。
+people:
+  - id: example_builder
+    name: Example Builder
+    aliases: [Example Founder]
+    company: Example Studio
+    result_note: 待填写本人披露的经营结果，保留指标、币种和时间周期
+    result_evidence_url: https://example.com/about
+    sources:
+      - kind: website_rss
+        url: https://example.com/feed.xml
+        relationship: self
+      - kind: podcast_rss
+        url: https://example.org/podcast.xml
+        relationship: guest_watch
+    youtube_channel_url: https://www.youtube.com/@example-builder
+    discovery_enabled: true
